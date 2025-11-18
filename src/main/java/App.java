@@ -22,6 +22,11 @@ public class App {
         openUser.addActionListener(e -> SwingUtilities.invokeLater(UserInterface::UserUI));
         options.add(openUser);
 
+
+        JMenuItem userList = new JMenuItem("User List");
+        userList.addActionListener(e -> SwingUtilities.invokeLater(UserList::List));
+        options.add(userList);
+
         menuBar.add(options);
         frame.setJMenuBar(menuBar);
 
