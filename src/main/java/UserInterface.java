@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class AdminInterface {
-    public static void AdminUI() {
-        JFrame frame = new JFrame("Admin - JCS");
+public class UserInterface {
+    public static void UserUI() {
+        JFrame frame = new JFrame("User - JCS");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
