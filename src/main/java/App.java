@@ -23,9 +23,17 @@ public class App {
         options.add(openUser);
 
 
-        JMenuItem userList = new JMenuItem("User List");
-        userList.addActionListener(e -> SwingUtilities.invokeLater(UserList::List));
+        JMenuItem userList = new JMenuItem("All List Admin Can See");
+        userList.addActionListener(e -> SwingUtilities.invokeLater(AllList::List));
         options.add(userList);
+
+        JMenuItem loginLog = new JMenuItem("LogIn Log Admin Can See");
+        loginLog.addActionListener(e -> SwingUtilities.invokeLater(LogInLog::List));
+        options.add(loginLog);
+
+        JMenuItem spamLog = new JMenuItem("Spam Log Admin Can See");
+        spamLog.addActionListener(e -> SwingUtilities.invokeLater(SpamLog::List));
+        options.add(spamLog);
 
         menuBar.add(options);
         frame.setJMenuBar(menuBar);

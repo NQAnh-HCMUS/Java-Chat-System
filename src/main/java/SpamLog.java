@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class UserList {
+public class SpamLog {
     public static void List() {
-        JFrame frame = new JFrame("UserList - Admin Only");
+        JFrame frame = new JFrame("Spam Log - Admin Only");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
