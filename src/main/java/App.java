@@ -1,3 +1,5 @@
+import src.admin.*;
+
 import javax.swing.*;
 import java.awt.*;
 
