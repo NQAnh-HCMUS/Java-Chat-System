@@ -54,7 +54,7 @@ public class App {
         options.add(signUp);
         
         JMenuItem updateAccount = new JMenuItem("[User] Update Account Info");
-        updateAccount.addActionListener(e -> SwingUtilities.invokeLater(UpdateAccount::getUpdatedInfo));
+        updateAccount.addActionListener(e -> SwingUtilities.invokeLater(UpdateAccount::getInfo));
         options.add(updateAccount);
 
         
