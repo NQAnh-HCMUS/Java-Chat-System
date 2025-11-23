@@ -1,30 +1,90 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FriendList {
-    public static void getUpdatedInfo() {
-        JFrame frame = new JFrame("Update Account - JCS");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(600, 400);
-        frame.setLocationRelativeTo(null);
+    public static void showFriendList() {
+        SwingUtilities.invokeLater(() -> {
+            // Main frame
+            JFrame frame = new JFrame("Friendlist - JCS");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setSize(700, 450);
+            frame.setLocationRelativeTo(null);
 
-        JPanel root = new JPanel(new BorderLayout(6,6));
+            // Root panel
+            JPanel root = new JPanel(new BorderLayout(8,8));
 
-        JTextArea chatArea = new JTextArea();
-        JScrollPane scroll = new JScrollPane(chatArea);
-        root.add(scroll, BorderLayout.CENTER);
+            // Top: searchbar
+            JPanel topBar = new JPanel(new BorderLayout(6,6));
+            JTextField searchBar = new JTextField();
+            // Search button (not functional yet)
+            JButton searchBtn = new JButton("Search");
+            Dimension searchBtnSize = new Dimension(100, 6);
+            searchBtn.setPreferredSize(searchBtnSize);
+            searchBtn.setMinimumSize(searchBtnSize);
+            searchBtn.setMaximumSize(searchBtnSize);
+            searchBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel inputPanel = new JPanel(new BorderLayout(6,6));
-        JTextField inputField = new JTextField();
-        JButton sendBtn = new JButton("Send");
-        inputPanel.add(inputField, BorderLayout.CENTER);
-        inputPanel.add(sendBtn, BorderLayout.EAST);
+            topBar.add(new JLabel("Find:"), BorderLayout.WEST);
+            topBar.add(searchBar, BorderLayout.CENTER);
+            topBar.add(searchBtn, BorderLayout.EAST);
+            root.add(topBar, BorderLayout.NORTH);
 
-        inputField.addActionListener(e -> sendBtn.doClick());
+            // Center: friendlist
+            DefaultListModel<String> ListTable = new DefaultListModel<>();
+            List<String> allFriends = new ArrayList<>();
+            try {
+                allFriends.addAll(loadFriends());
+            } catch (IOException ex) {
+                System.out.println("IOException caught: " + ex.getMessage());
+            }
+            allFriends.forEach(ListTable::addElement);
 
-        root.add(inputPanel, BorderLayout.SOUTH);
+            // Friendlist
+            JList<String> list = new JList<>(ListTable);
+            list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            JScrollPane scroll = new JScrollPane(list);
+            root.add(scroll, BorderLayout.CENTER);
 
-        frame.setContentPane(root);
-        frame.setVisible(true);
+            // Right: buttons list
+            JPanel actions = new JPanel();
+            actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
+            JButton addBtn = new JButton("Add");
+            JButton removeBtn = new JButton("Remove");
+            JButton detailsBtn = new JButton("Details");
+            JButton messageBtn = new JButton("Message");
+            
+            Dimension buttonSize = new Dimension(120, 30);
+            for (JButton b : new JButton[]{addBtn, removeBtn, detailsBtn, messageBtn}) {
+                b.setMaximumSize(buttonSize);
+                b.setAlignmentX(Component.CENTER_ALIGNMENT);
+                actions.add(b);
+                actions.add(Box.createVerticalStrut(8));
+            }
+
+            root.add(actions, BorderLayout.EAST);
+
+            frame.setContentPane(root);
+            frame.setVisible(true);
+        });
     }
-}
+
+    private static List<String> loadFriends() throws IOException {
+        Path fList = Paths.get("script").resolve("friends.txt");
+        if (!Files.exists(fList)) { // if not, create parent dir & sample file
+            if (fList.getParent() != null) Files.createDirectories(fList.getParent());
+            List<String> sample = List.of("Friend A", "Friend B", "Friend C");
+            Files.write(fList, sample, StandardCharsets.UTF_8);
+            return new ArrayList<>(sample);
+        }
+        List<String> lines = Files.readAllLines(fList, StandardCharsets.UTF_8);
+        return lines.stream().map(String::trim).filter(s -> !s.isEmpty()).distinct().collect(Collectors.toList());
+    }
+}	
