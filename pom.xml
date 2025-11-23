@@ -37,6 +37,7 @@
                     <configuration>
                         <sources>
                         <source>${project.basedir}/src/admin</source>
+                        <source>${project.basedir}/src/user</source>
                         </sources>
                     </configuration>
                     </execution>
