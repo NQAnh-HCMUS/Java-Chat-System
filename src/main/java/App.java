@@ -25,41 +25,6 @@ public class App {
         JMenuItem openUser = new JMenuItem("Open User");
         openUser.addActionListener(e -> SwingUtilities.invokeLater(UserInterface::UserUI));
         options.add(openUser);
-
-
-        JMenuItem userList = new JMenuItem("[Admin] All List");
-        userList.addActionListener(e -> SwingUtilities.invokeLater(AllList::List));
-        options.add(userList);
-
-        JMenuItem loginLog = new JMenuItem("[Admin] Login Log");
-        loginLog.addActionListener(e -> SwingUtilities.invokeLater(LogInLog::List));
-        options.add(loginLog);
-
-        JMenuItem spamLog = new JMenuItem("[Admin] Spam Log");
-        spamLog.addActionListener(e -> SwingUtilities.invokeLater(SpamLog::List));
-        options.add(spamLog);
-
-/**********************************************************************************/
-    
-        JMenuItem chatUI = new JMenuItem("[User] Chat Interface");
-        chatUI.addActionListener(e -> SwingUtilities.invokeLater(ChatUI::Chat));
-        options.add(chatUI);
-
-        JMenuItem friendList = new JMenuItem("[User] Friend List");
-        friendList.addActionListener(e -> SwingUtilities.invokeLater(FriendList::showFriendList));
-        options.add(friendList);
-        
-        JMenuItem signUp = new JMenuItem("[User] Sign Up");
-        signUp.addActionListener(e -> SwingUtilities.invokeLater(SignUp::getInfo));
-        options.add(signUp);
-        
-        JMenuItem updateAccount = new JMenuItem("[User] Update Account Info");
-        updateAccount.addActionListener(e -> SwingUtilities.invokeLater(UpdateAccount::getInfo));
-        options.add(updateAccount);
-
-        
-        
-        
         
         menuBar.add(options);
         frame.setJMenuBar(menuBar);
