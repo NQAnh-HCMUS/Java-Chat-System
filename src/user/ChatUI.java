@@ -3,18 +3,18 @@ import java.awt.*;
 
 public class ChatUI {
     public static void Chat () {
-        JFrame frame = new JFrame("Java Chat System");
+        JFrame frame = new JFrame("JCS - Chatting with ________");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 500);
+        frame.setSize(500, 500);
         frame.setLocationRelativeTo(null);
 
         JMenuBar menuBar = new JMenuBar();
-        JMenu options = new JMenu("Options");
-        JMenuItem openAdmin = new JMenuItem("Open Admin");
-        openAdmin.addActionListener(e -> SwingUtilities.invokeLater(AdminInterface::AdminUI));
-        options.add(openAdmin);
+        JMenu menu = new JMenu("Menu");
+        // JMenuItem openAdmin = new JMenuItem("Open Admin");
+        // openAdmin.addActionListener(e -> SwingUtilities.invokeLater(AdminInterface::AdminUI));
+        // options.add(openAdmin);
 
-        menuBar.add(options);
+        menuBar.add(menu);
         frame.setJMenuBar(menuBar);
 
         
@@ -22,6 +22,7 @@ public class ChatUI {
 
         JPanel root = new JPanel(new BorderLayout(6,6));
 
+        // Live chat log
         JTextArea chatArea = new JTextArea();
         chatArea.setEditable(false);
         chatArea.setLineWrap(true);
@@ -29,6 +30,7 @@ public class ChatUI {
         JScrollPane scroll = new JScrollPane(chatArea);
         root.add(scroll, BorderLayout.CENTER);
 
+        // Input panel
         JPanel inputPanel = new JPanel(new BorderLayout(6,6));
         JTextField inputField = new JTextField();
         JButton sendBtn = new JButton("Send");
