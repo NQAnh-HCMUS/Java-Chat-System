@@ -10,6 +10,7 @@ public class LogInLog {
 
         JPanel root = new JPanel(new BorderLayout(6,6));
 
+        // Scrollable log
         JTextArea listArea = new JTextArea();
         JScrollPane scroll = new JScrollPane(listArea);
         root.add(scroll, BorderLayout.CENTER);
@@ -17,8 +18,12 @@ public class LogInLog {
         JPanel inputPanel = new JPanel(new BorderLayout(6,6));
         JTextField inputField = new JTextField();
         JButton sendBtn = new JButton("Search");
+        JButton reloadBtn = new JButton("Reload");
         inputPanel.add(inputField, BorderLayout.CENTER);
-        inputPanel.add(sendBtn, BorderLayout.EAST);
+        JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
+        right.add(sendBtn);
+        right.add(reloadBtn);
+        inputPanel.add(right, BorderLayout.EAST);
 
         inputField.addActionListener(e -> sendBtn.doClick());
 
