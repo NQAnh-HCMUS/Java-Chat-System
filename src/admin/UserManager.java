@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SpamLog {
-    public static void List() {
+public class UserManager {
+    public static void showUser() {
         SwingUtilities.invokeLater(() -> {
             // Main frame
             JFrame frame = new JFrame("[Admin] User Manager");

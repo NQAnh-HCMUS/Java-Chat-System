@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SpamLog {
-    public static void List() {
+public class GroupManager {
+    public static void showGroup() {
         SwingUtilities.invokeLater(() -> {
             // Main frame
-            JFrame frame = new JFrame("[Admin] User Manager");
+            JFrame frame = new JFrame("[Admin] Group Manager");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setSize(700, 450);
             frame.setLocationRelativeTo(null);
@@ -56,16 +56,12 @@ public class SpamLog {
             // Right: buttons list
             JPanel actions = new JPanel();
             actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
-            JButton addBtn = new JButton("Add");
-            JButton updateBtn = new JButton("Update");
-            JButton detailsBtn = new JButton("Details");
-            JButton lockBtn = new JButton("Lock/Unlock");
-            JButton passwdBtn = new JButton("Change Password");
-            JButton historyBtn = new JButton("Check Login History");
-            JButton friendlistBtn = new JButton("Check Friendlist");
+            JButton sortBtn = new JButton("Sort by Name/Creation Date");
+            JButton memberListBtn = new JButton("Member List");
+            JButton adminListBtn = new JButton("Admin List");
             
             Dimension buttonSize = new Dimension(120, 30);
-            for (JButton b : new JButton[]{addBtn, updateBtn, detailsBtn, lockBtn, passwdBtn, historyBtn, friendlistBtn}) {
+            for (JButton b : new JButton[]{sortBtn, memberListBtn, adminListBtn}) {
                 b.setMaximumSize(buttonSize);
                 b.setAlignmentX(Component.CENTER_ALIGNMENT);
                 actions.add(b);

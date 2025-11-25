@@ -60,9 +60,10 @@ public class FriendList {
             JButton removeBtn = new JButton("Remove");
             JButton detailsBtn = new JButton("Details");
             JButton messageBtn = new JButton("Message");
+            JButton reportBtn = new JButton("Report");
             
             Dimension buttonSize = new Dimension(120, 30);
-            for (JButton b : new JButton[]{addBtn, removeBtn, detailsBtn, messageBtn}) {
+            for (JButton b : new JButton[]{addBtn, detailsBtn, messageBtn, removeBtn, reportBtn}) {
                 b.setMaximumSize(buttonSize);
                 b.setAlignmentX(Component.CENTER_ALIGNMENT);
                 actions.add(b);

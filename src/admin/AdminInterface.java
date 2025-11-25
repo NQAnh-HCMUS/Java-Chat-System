@@ -10,19 +10,35 @@ public class AdminInterface {
 
         JPanel root = new JPanel(new BorderLayout(6,6));
 
-        JTextArea chatArea = new JTextArea();
-        JScrollPane scroll = new JScrollPane(chatArea);
-        root.add(scroll, BorderLayout.CENTER);
+        // Buttons list
+        JPanel actions = new JPanel();
+        actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
+        JButton listBtn = new JButton("All List");
+        JButton graphBtn = new JButton("Graph");
+        JButton groupManagerBtn = new JButton("Group Manager");
+        JButton userManagerBtn = new JButton("User Manager");
+        JButton loginLogBtn = new JButton("Login Log");
+        JButton spamLogBtn = new JButton("Spam Log");
 
-        JPanel inputPanel = new JPanel(new BorderLayout(6,6));
-        JTextField inputField = new JTextField();
-        JButton sendBtn = new JButton("Send");
-        inputPanel.add(inputField, BorderLayout.CENTER);
-        inputPanel.add(sendBtn, BorderLayout.EAST);
+        Dimension buttonSize = new Dimension(140, 30);
+        for (JButton b : new JButton[]{listBtn, graphBtn, groupManagerBtn, userManagerBtn, loginLogBtn, spamLogBtn}) {
+            b.setMaximumSize(buttonSize);
+            b.setAlignmentX(Component.CENTER_ALIGNMENT);
+            actions.add(b);
+            actions.add(Box.createVerticalStrut(8));
+        }
 
-        inputField.addActionListener(e -> sendBtn.doClick());
+        // Wire buttons to existing UIs
+        listBtn.addActionListener(e -> SwingUtilities.invokeLater(AllList::List));
+        graphBtn.addActionListener(e -> SwingUtilities.invokeLater(Graph::chooseYear));
+        groupManagerBtn.addActionListener(e -> SwingUtilities.invokeLater(GroupManager::showGroup));
+        userManagerBtn.addActionListener(e -> SwingUtilities.invokeLater(UserManager::showUser));        
+        loginLogBtn.addActionListener(e -> SwingUtilities.invokeLater(LogInLog::List));
+        spamLogBtn.addActionListener(e -> SwingUtilities.invokeLater(SpamLog::List));
+        
 
-        root.add(inputPanel, BorderLayout.SOUTH);
+        root.add(actions, BorderLayout.WEST);
+
 
         frame.setContentPane(root);
         frame.setVisible(true);
