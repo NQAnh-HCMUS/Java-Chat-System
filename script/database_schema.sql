@@ -1,11 +1,3 @@
---DROP DATABASE IF EXISTS ChatSystem;
-
-CREATE DATABASE ChatSystem;
-GO
-
-USE ChatSystem;
-GO
-
 -- Bảng người dùng
 CREATE TABLE users (
     user_id INT PRIMARY KEY IDENTITY(1,1),
@@ -29,7 +21,7 @@ CREATE TABLE login_history (
     user_id INT,
     login_time DATETIME DEFAULT GETDATE(),
     ip_address VARCHAR(45),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 GO
 
@@ -41,9 +33,9 @@ CREATE TABLE friendships (
     status NVARCHAR(10) DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'blocked')),
     created_at DATETIME DEFAULT GETDATE(),
     blocked_by INT NULL,
-    FOREIGN KEY (user_id1) REFERENCES users(user_id),
-    FOREIGN KEY (user_id2) REFERENCES users(user_id),
-    FOREIGN KEY (blocked_by) REFERENCES users(user_id),
+    FOREIGN KEY (user_id1) REFERENCES users(user_id) ON DELETE NO ACTION,
+    FOREIGN KEY (user_id2) REFERENCES users(user_id) ON DELETE NO ACTION,
+    FOREIGN KEY (blocked_by) REFERENCES users(user_id) ON DELETE NO ACTION,
     CONSTRAINT unique_friendship UNIQUE (user_id1, user_id2)
 );
 GO
@@ -56,7 +48,7 @@ CREATE TABLE chat_groups (
     created_at DATETIME DEFAULT GETDATE(),
     is_encrypted BIT DEFAULT 0,
     encryption_key VARCHAR(255),
-    FOREIGN KEY (created_by) REFERENCES users(user_id)
+    FOREIGN KEY (created_by) REFERENCES users(user_id) ON DELETE NO ACTION
 );
 GO
 
@@ -67,8 +59,8 @@ CREATE TABLE group_members (
     user_id INT,
     is_admin BIT DEFAULT 0,
     joined_at DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (group_id) REFERENCES chat_groups(group_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (group_id) REFERENCES chat_groups(group_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE NO ACTION,
     CONSTRAINT unique_member UNIQUE (group_id, user_id)
 );
 GO
@@ -82,8 +74,8 @@ CREATE TABLE private_messages (
     sent_at DATETIME DEFAULT GETDATE(),
     is_read BIT DEFAULT 0,
     is_deleted BIT DEFAULT 0,
-    FOREIGN KEY (sender_id) REFERENCES users(user_id),
-    FOREIGN KEY (receiver_id) REFERENCES users(user_id)
+    FOREIGN KEY (sender_id) REFERENCES users(user_id) ON DELETE NO ACTION,
+    FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE NO ACTION
 );
 GO
 
@@ -95,8 +87,8 @@ CREATE TABLE group_messages (
     message_content TEXT NOT NULL,
     sent_at DATETIME DEFAULT GETDATE(),
     is_deleted BIT DEFAULT 0,
-    FOREIGN KEY (group_id) REFERENCES chat_groups(group_id),
-    FOREIGN KEY (sender_id) REFERENCES users(user_id)
+    FOREIGN KEY (group_id) REFERENCES chat_groups(group_id) ON DELETE CASCADE,
+    FOREIGN KEY (sender_id) REFERENCES users(user_id) ON DELETE NO ACTION
 );
 GO
 
@@ -109,8 +101,8 @@ CREATE TABLE spam_reports (
     report_reason TEXT,
     reported_at DATETIME DEFAULT GETDATE(),
     status NVARCHAR(10) DEFAULT 'pending' CHECK (status IN ('pending', 'resolved')),
-    FOREIGN KEY (reporter_id) REFERENCES users(user_id),
-    FOREIGN KEY (reported_user_id) REFERENCES users(user_id)
+    FOREIGN KEY (reporter_id) REFERENCES users(user_id) ON DELETE NO ACTION,
+    FOREIGN KEY (reported_user_id) REFERENCES users(user_id) ON DELETE NO ACTION
 );
 GO
 
@@ -122,7 +114,43 @@ CREATE TABLE user_activities (
     login_count INT DEFAULT 0,
     private_chat_partners INT DEFAULT 0,
     group_chat_count INT DEFAULT 0,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     CONSTRAINT unique_activity UNIQUE (user_id, activity_date)
 );
+GO
+
+-- ========== TẠO STORED PROCEDURE ĐỂ XÓA USER ==========
+CREATE PROCEDURE DeleteUser
+    @user_id INT
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        
+        -- Xóa các bản ghi liên quan theo thứ tự
+        DELETE FROM user_activities WHERE user_id = @user_id;
+        DELETE FROM login_history WHERE user_id = @user_id;
+        DELETE FROM spam_reports WHERE reporter_id = @user_id OR reported_user_id = @user_id;
+        DELETE FROM private_messages WHERE sender_id = @user_id OR receiver_id = @user_id;
+        DELETE FROM group_messages WHERE sender_id = @user_id;
+        DELETE FROM friendships WHERE user_id1 = @user_id OR user_id2 = @user_id OR blocked_by = @user_id;
+        
+        -- Cập nhật các nhóm mà user đã tạo
+        UPDATE chat_groups SET created_by = NULL WHERE created_by = @user_id;
+        
+        -- Xóa user khỏi các nhóm
+        DELETE FROM group_members WHERE user_id = @user_id;
+        
+        -- Cuối cùng xóa user
+        DELETE FROM users WHERE user_id = @user_id;
+        
+        COMMIT TRANSACTION;
+        PRINT 'Đã xóa user thành công: ' + CAST(@user_id AS VARCHAR);
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        PRINT 'Lỗi khi xóa user: ' + ERROR_MESSAGE();
+        THROW;
+    END CATCH
+END;
 GO
