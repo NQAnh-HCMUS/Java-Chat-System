@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ChatUI {
+public class MultiChatUI {
     public static void Chat () {
-        JFrame frame = new JFrame("JCS - Chatting with ________");
+        JFrame frame = new JFrame("JCS - Chatting with ____,____,____");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 500);
         frame.setLocationRelativeTo(null);

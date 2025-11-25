@@ -37,7 +37,7 @@ public class FriendList {
             topBar.add(searchBtn, BorderLayout.EAST);
             root.add(topBar, BorderLayout.NORTH);
 
-            // Center: riendlist frame
+            // Center: friendlist
             DefaultListModel<String> ListTable = new DefaultListModel<>();
             List<String> allFriends = new ArrayList<>();
             try {
@@ -56,13 +56,14 @@ public class FriendList {
             // Right: buttons list
             JPanel actions = new JPanel();
             actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
-            JButton addBtn = new JButton("New Friend");
+            JButton addBtn = new JButton("Add");
+            JButton removeBtn = new JButton("Remove");
             JButton detailsBtn = new JButton("Details");
             JButton messageBtn = new JButton("Message");
-            JButton removeBtn = new JButton("Remove");
-
+            JButton reportBtn = new JButton("Report");
+            
             Dimension buttonSize = new Dimension(120, 30);
-            for (JButton b : new JButton[]{addBtn, detailsBtn, messageBtn, removeBtn}) {
+            for (JButton b : new JButton[]{addBtn, detailsBtn, messageBtn, removeBtn, reportBtn}) {
                 b.setMaximumSize(buttonSize);
                 b.setAlignmentX(Component.CENTER_ALIGNMENT);
                 actions.add(b);

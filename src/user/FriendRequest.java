@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SpamLog {
-    public static void List() {
+public class FriendRequest {
+    public static void showRequest() {
         SwingUtilities.invokeLater(() -> {
             // Main frame
-            JFrame frame = new JFrame("[Admin] User Manager");
+            JFrame frame = new JFrame("Friend Request - JCS");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setSize(700, 450);
             frame.setLocationRelativeTo(null);
@@ -37,7 +37,7 @@ public class SpamLog {
             topBar.add(searchBtn, BorderLayout.EAST);
             root.add(topBar, BorderLayout.NORTH);
 
-            // Center: userlist
+            // Center: riendlist frame
             DefaultListModel<String> ListTable = new DefaultListModel<>();
             List<String> allFriends = new ArrayList<>();
             try {
@@ -47,7 +47,7 @@ public class SpamLog {
             }
             allFriends.forEach(ListTable::addElement);
 
-            // Userlist
+            // Friendlist
             JList<String> list = new JList<>(ListTable);
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             JScrollPane scroll = new JScrollPane(list);
@@ -56,16 +56,13 @@ public class SpamLog {
             // Right: buttons list
             JPanel actions = new JPanel();
             actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
-            JButton addBtn = new JButton("Add");
-            JButton updateBtn = new JButton("Update");
+            JButton addBtn = new JButton("Accept");
             JButton detailsBtn = new JButton("Details");
-            JButton lockBtn = new JButton("Lock/Unlock");
-            JButton passwdBtn = new JButton("Change Password");
-            JButton historyBtn = new JButton("Check Login History");
-            JButton friendlistBtn = new JButton("Check Friendlist");
-            
+            JButton messageBtn = new JButton("Message");
+            JButton removeBtn = new JButton("Remove");
+
             Dimension buttonSize = new Dimension(120, 30);
-            for (JButton b : new JButton[]{addBtn, updateBtn, detailsBtn, lockBtn, passwdBtn, historyBtn, friendlistBtn}) {
+            for (JButton b : new JButton[]{addBtn, detailsBtn, messageBtn, removeBtn}) {
                 b.setMaximumSize(buttonSize);
                 b.setAlignmentX(Component.CENTER_ALIGNMENT);
                 actions.add(b);

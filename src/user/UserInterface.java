@@ -13,14 +13,16 @@ public class UserInterface {
         // Buttons list
         JPanel actions = new JPanel();
         actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
-        JButton signUpBtn = new JButton("Sign Up");
-        JButton loginBtn = new JButton("Login");
         JButton friendListBtn = new JButton("Friend List");
+        JButton friendReqBtn = new JButton("Friend Requests");
+        JButton loginBtn = new JButton("Login");
+        JButton multichatBtn = new JButton("Multi Chat");
+        JButton singlechatBtn = new JButton("Single Chat");
+        JButton signUpBtn = new JButton("Sign Up");
         JButton updateAccBtn = new JButton("Update Account");
-        JButton chatBtn = new JButton("Chat");
 
         Dimension buttonSize = new Dimension(140, 30);
-        for (JButton b : new JButton[]{loginBtn, signUpBtn, updateAccBtn, friendListBtn, chatBtn}) {
+        for (JButton b : new JButton[]{loginBtn, signUpBtn, updateAccBtn, friendReqBtn, friendListBtn, singlechatBtn, multichatBtn}) {
             b.setMaximumSize(buttonSize);
             b.setAlignmentX(Component.CENTER_ALIGNMENT);
             actions.add(b);
@@ -32,7 +34,9 @@ public class UserInterface {
         friendListBtn.addActionListener(e -> SwingUtilities.invokeLater(FriendList::showFriendList));
         signUpBtn.addActionListener(e -> SwingUtilities.invokeLater(SignUp::getInfo));
         updateAccBtn.addActionListener(e -> SwingUtilities.invokeLater(UpdateAccount::getInfo));
-        chatBtn.addActionListener(e -> SwingUtilities.invokeLater(ChatUI::Chat));
+        singlechatBtn.addActionListener(e -> SwingUtilities.invokeLater(SingleChatUI::Chat));
+        multichatBtn.addActionListener(e -> SwingUtilities.invokeLater(MultiChatUI::Chat));
+        friendReqBtn.addActionListener(e -> SwingUtilities.invokeLater(FriendRequest::showRequest));
 
         root.add(actions, BorderLayout.WEST);
 
