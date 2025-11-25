@@ -1,3 +1,10 @@
+--DROP DATABASE IF EXISTS ChatSystem;
+
+CREATE DATABASE ChatSystem;
+GO
+USE ChatSystem;
+GO
+
 -- Bảng người dùng
 CREATE TABLE users (
     user_id INT PRIMARY KEY IDENTITY(1,1),
