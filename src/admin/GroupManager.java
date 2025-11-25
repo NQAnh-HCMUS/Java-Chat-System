@@ -56,12 +56,13 @@ public class GroupManager {
             // Right: buttons list
             JPanel actions = new JPanel();
             actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
-            JButton sortBtn = new JButton("Sort by Name/Creation Date");
+            JButton nameSortBtn = new JButton("Sort by Name");
+            JButton birthsortBtn = new JButton("Sort by Creation Date");
             JButton memberListBtn = new JButton("Member List");
             JButton adminListBtn = new JButton("Admin List");
             
-            Dimension buttonSize = new Dimension(120, 30);
-            for (JButton b : new JButton[]{sortBtn, memberListBtn, adminListBtn}) {
+            Dimension buttonSize = new Dimension(180, 30);
+            for (JButton b : new JButton[]{nameSortBtn, birthsortBtn, memberListBtn, adminListBtn}) {
                 b.setMaximumSize(buttonSize);
                 b.setAlignmentX(Component.CENTER_ALIGNMENT);
                 actions.add(b);

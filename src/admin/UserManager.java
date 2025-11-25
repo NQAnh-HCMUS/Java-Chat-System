@@ -61,10 +61,10 @@ public class UserManager {
             JButton detailsBtn = new JButton("Details");
             JButton lockBtn = new JButton("Lock/Unlock");
             JButton passwdBtn = new JButton("Change Password");
-            JButton historyBtn = new JButton("Check Login History");
+            JButton historyBtn = new JButton("Login History");
             JButton friendlistBtn = new JButton("Check Friendlist");
             
-            Dimension buttonSize = new Dimension(120, 30);
+            Dimension buttonSize = new Dimension(160, 30);
             for (JButton b : new JButton[]{addBtn, updateBtn, detailsBtn, lockBtn, passwdBtn, historyBtn, friendlistBtn}) {
                 b.setMaximumSize(buttonSize);
                 b.setAlignmentX(Component.CENTER_ALIGNMENT);
