@@ -126,6 +126,7 @@ public class AdminInterface {
             "Group Management",
             "New User Graph",
             "Activity Graph",
+            "Sign Up Log",
             "Login History",
             "Spam Reports",
             "System Settings"
@@ -136,6 +137,7 @@ public class AdminInterface {
             () -> SwingUtilities.invokeLater(GroupManager::showGroup),
             () -> SwingUtilities.invokeLater(NewUserGraph::chooseYear),
             () -> SwingUtilities.invokeLater(ActivityGraph::chooseYear),
+            () -> SwingUtilities.invokeLater(SignUpLog::showList),
             () -> SwingUtilities.invokeLater(LogInLog::List),
             () -> SwingUtilities.invokeLater(SpamLog::List),
             () -> showSystemSettings()

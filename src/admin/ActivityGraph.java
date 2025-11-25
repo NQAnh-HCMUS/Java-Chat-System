@@ -16,7 +16,7 @@ public class ActivityGraph {
         JLabel yearLabel = new JLabel("Year:");
         JTextField yearField = new JTextField(String.valueOf(LocalDateTime.now().getYear()), 6);
         JButton showBtn = new JButton("Show");
-        JButton reloadBtn = new JButton("Reload Data");
+        JButton reloadBtn = new JButton("Reload");
         top.add(yearLabel);
         top.add(yearField);
         top.add(showBtn);
@@ -97,7 +97,7 @@ public class ActivityGraph {
 
             // Chart title
             timeGraph.setFont(timeGraph.getFont().deriveFont(Font.BOLD, 14f));
-            timeGraph.drawString("NEW SIGNUPS IN: " + defaultYear, width/2 - 60, margin/2 + 6);
+            timeGraph.drawString("NUMBER OF USERS DURING: " + defaultYear, width/2 - 60, margin/2 + 6);
 
             timeGraph.dispose();
         }
