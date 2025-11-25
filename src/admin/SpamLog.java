@@ -39,13 +39,7 @@ public class SpamLog {
 
             // Center: userlist
             DefaultListModel<String> ListTable = new DefaultListModel<>();
-            List<String> allFriends = new ArrayList<>();
-            try {
-                allFriends.addAll(loadFriends());
-            } catch (IOException ex) {
-                System.out.println("IOException caught: " + ex.getMessage());
-            }
-            allFriends.forEach(ListTable::addElement);
+            List<String> spamlog = new ArrayList<>();
 
             // Userlist
             JList<String> list = new JList<>(ListTable);
@@ -56,16 +50,14 @@ public class SpamLog {
             // Right: buttons list
             JPanel actions = new JPanel();
             actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
-            JButton addBtn = new JButton("Add");
-            JButton updateBtn = new JButton("Update");
-            JButton detailsBtn = new JButton("Details");
-            JButton lockBtn = new JButton("Lock/Unlock");
-            JButton passwdBtn = new JButton("Change Password");
-            JButton historyBtn = new JButton("Check Login History");
-            JButton friendlistBtn = new JButton("Check Friendlist");
+            JButton timeSortBtn = new JButton("Sort by Time");
+            JButton nameSortBtn = new JButton("Sort by Username");
+            JButton timeFilterBtn = new JButton("Filter by Time");
+            JButton nameFilterBtn = new JButton("Filter by Username");
+            JButton lockBtn = new JButton("Lock/Unlock Account");
             
-            Dimension buttonSize = new Dimension(120, 30);
-            for (JButton b : new JButton[]{addBtn, updateBtn, detailsBtn, lockBtn, passwdBtn, historyBtn, friendlistBtn}) {
+            Dimension buttonSize = new Dimension(160, 30);
+            for (JButton b : new JButton[]{timeSortBtn, nameSortBtn, timeFilterBtn, nameFilterBtn, lockBtn}) {
                 b.setMaximumSize(buttonSize);
                 b.setAlignmentX(Component.CENTER_ALIGNMENT);
                 actions.add(b);
@@ -77,17 +69,5 @@ public class SpamLog {
             frame.setContentPane(root);
             frame.setVisible(true);
         });
-    }
-
-    private static List<String> loadFriends() throws IOException {
-        Path fList = Paths.get("script").resolve("friends.txt");
-        if (!Files.exists(fList)) { // if not, create parent dir & sample file
-            if (fList.getParent() != null) Files.createDirectories(fList.getParent());
-            List<String> sample = List.of("Friend A", "Friend B", "Friend C");
-            Files.write(fList, sample, StandardCharsets.UTF_8);
-            return new ArrayList<>(sample);
-        }
-        List<String> lines = Files.readAllLines(fList, StandardCharsets.UTF_8);
-        return lines.stream().map(String::trim).filter(s -> !s.isEmpty()).distinct().collect(Collectors.toList());
     }
 }	
