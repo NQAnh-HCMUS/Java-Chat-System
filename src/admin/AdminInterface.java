@@ -1,3 +1,4 @@
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -20,6 +21,7 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 public class AdminInterface {
+
     // Modern color palette
     private static final Color DARK_BLUE = new Color(0x001C44);
     private static final Color BLUE = new Color(0x0C5776);
@@ -118,25 +120,25 @@ public class AdminInterface {
         sidebar.setBorder(new EmptyBorder(25, 15, 25, 15));
         sidebar.setPreferredSize(new Dimension(220, 0));
 
-        // Create buttons without icons
+
         String[] buttonNames = {
-                "User Management",
-                "Group Management",
-                "Statistics & Graphs",
-                "Login History",
-                "Spam Reports",
-                "All Lists",
-                "System Settings"
+            "User Management",
+            "Group Management",
+            "New User Graph",
+            "Activity Graph",
+            "Login History",
+            "Spam Reports",
+            "System Settings"
         };
 
         Runnable[] buttonActions = {
-                () -> SwingUtilities.invokeLater(UserManager::showUser),
-                () -> SwingUtilities.invokeLater(GroupManager::showGroup),
-                () -> SwingUtilities.invokeLater(Graph::chooseYear),
-                () -> SwingUtilities.invokeLater(LogInLog::List),
-                () -> SwingUtilities.invokeLater(SpamLog::List),
-                () -> SwingUtilities.invokeLater(AllList::List),
-                () -> showSystemSettings()
+            () -> SwingUtilities.invokeLater(UserManager::showUser),
+            () -> SwingUtilities.invokeLater(GroupManager::showGroup),
+            () -> SwingUtilities.invokeLater(NewUserGraph::chooseYear),
+            () -> SwingUtilities.invokeLater(ActivityGraph::chooseYear),
+            () -> SwingUtilities.invokeLater(LogInLog::List),
+            () -> SwingUtilities.invokeLater(SpamLog::List),
+            () -> showSystemSettings()
         };
 
         for (int i = 0; i < buttonNames.length; i++) {
@@ -150,40 +152,41 @@ public class AdminInterface {
         return sidebar;
     }
 
-private static JButton createStyledButton(String text, Runnable action) {
-    JButton button = new JButton(text);
-    button.setAlignmentX(Component.CENTER_ALIGNMENT);
-    button.setMaximumSize(new Dimension(180, 50));
-    button.setPreferredSize(new Dimension(180, 50));
-    button.setFont(BUTTON_FONT);
-    
-    button.setBackground(LIGHT_TEAL);  
-    button.setForeground(DARK_BLUE); 
-    button.setFocusPainted(false);
-    button.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createLineBorder(TEAL, 1),
-        new EmptyBorder(10, 15, 10, 15)
-    ));
-    
-    // Hover effects
-    button.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseEntered(java.awt.event.MouseEvent evt) {
-            button.setBackground(TEAL);
-            button.setForeground(Color.WHITE); 
-            button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        }
-        
-        public void mouseExited(java.awt.event.MouseEvent evt) {
-            button.setBackground(LIGHT_TEAL);
-            button.setForeground(DARK_BLUE);   
-            button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        }
-    });
-    
-    button.addActionListener(e -> action.run());
-    
-    return button;
-}
+    private static JButton createStyledButton(String text, Runnable action) {
+        JButton button = new JButton(text);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMaximumSize(new Dimension(180, 50));
+        button.setPreferredSize(new Dimension(180, 50));
+        button.setFont(BUTTON_FONT);
+
+        // Styling 
+        button.setBackground(LIGHT_TEAL);  
+        button.setForeground(DARK_BLUE);   
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(TEAL, 1),
+                new EmptyBorder(10, 15, 10, 15)
+        ));
+
+        // Hover effects
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(TEAL);
+                button.setForeground(Color.WHITE);  
+                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(LIGHT_TEAL);
+                button.setForeground(DARK_BLUE);    
+                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+
+        button.addActionListener(e -> action.run());
+
+        return button;
+    }
 
     private static JPanel createContentPanel() {
         JPanel contentPanel = new JPanel(new BorderLayout());
@@ -193,7 +196,7 @@ private static JButton createStyledButton(String text, Runnable action) {
         // Welcome section
         JPanel welcomePanel = createWelcomePanel();
 
-        // Stats section - FIXED size issues
+        // Stats section
         JPanel statsPanel = createStatsPanel();
 
         // Main content container
@@ -244,12 +247,12 @@ private static JButton createStyledButton(String text, Runnable action) {
 
         JPanel statsPanel = new JPanel(new GridLayout(2, 3, 20, 20));
         statsPanel.setBackground(LIGHT_GRAY);
-        statsPanel.setPreferredSize(new Dimension(700, 220)); // Fixed size to ensure visibility
+        statsPanel.setPreferredSize(new Dimension(700, 220));
 
         // Sample stats
-        String[] stats = { "1,234", "567", "89", "12,345", "23", "456" };
-        String[] titles = { "Total Users", "Active Today", "Groups", "Messages", "Reports", "Online" };
-        Color[] colors = { TEAL, BLUE, DARK_BLUE, TEAL, BLUE, DARK_BLUE };
+        String[] stats = {"1,234", "567", "89", "12,345", "23", "456"};
+        String[] titles = {"Total Users", "Active Today", "Groups", "Messages", "Reports", "Online"};
+        Color[] colors = {TEAL, BLUE, DARK_BLUE, TEAL, BLUE, DARK_BLUE};
 
         for (int i = 0; i < stats.length; i++) {
             JPanel statCard = createModernStatCard(titles[i], stats[i], colors[i]);
@@ -266,8 +269,9 @@ private static JButton createStyledButton(String text, Runnable action) {
         card.setBackground(WHITE);
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0xE1E8ED), 1),
-                new EmptyBorder(20, 15, 20, 15)));
-        card.setPreferredSize(new Dimension(180, 90)); 
+                new EmptyBorder(20, 15, 20, 15)
+        ));
+        card.setPreferredSize(new Dimension(180, 90));
 
         // Title
         JLabel titleLabel = new JLabel(title);
@@ -312,12 +316,12 @@ private static JButton createStyledButton(String text, Runnable action) {
 
     private static void showSystemSettings() {
         JOptionPane.showMessageDialog(null,
-                "System Settings Panel\n\n" +
-                        "• Database Configuration\n" +
-                        "• Security Settings\n" +
-                        "• Backup & Restore\n" +
-                        "• System Logs\n\n" +
-                        "This feature is under development.",
+                "System Settings Panel\n\n"
+                + "• Database Configuration\n"
+                + "• Security Settings\n"
+                + "• Backup & Restore\n"
+                + "• System Logs\n\n"
+                + "This feature is under development.",
                 "System Settings",
                 JOptionPane.INFORMATION_MESSAGE);
     }
