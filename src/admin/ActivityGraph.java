@@ -2,9 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDateTime;
 
-public class Graph {
+public class ActivityGraph {
     public static void chooseYear() {
-        JFrame frame = new JFrame("[Admin] New Account Graph - JCS");
+        JFrame frame = new JFrame("[Admin] Activity Graph - JCS");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(800, 500);
         frame.setLocationRelativeTo(null);

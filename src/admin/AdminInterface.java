@@ -13,7 +13,6 @@ public class AdminInterface {
         // Buttons list
         JPanel actions = new JPanel();
         actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
-        JButton listBtn = new JButton("All List");
         JButton graphBtn = new JButton("Graph");
         JButton groupManagerBtn = new JButton("Group Manager");
         JButton userManagerBtn = new JButton("User Manager");
@@ -21,7 +20,7 @@ public class AdminInterface {
         JButton spamLogBtn = new JButton("Spam Log");
 
         Dimension buttonSize = new Dimension(140, 30);
-        for (JButton b : new JButton[]{listBtn, graphBtn, groupManagerBtn, userManagerBtn, loginLogBtn, spamLogBtn}) {
+        for (JButton b : new JButton[]{graphBtn, groupManagerBtn, userManagerBtn, loginLogBtn, spamLogBtn}) {
             b.setMaximumSize(buttonSize);
             b.setAlignmentX(Component.CENTER_ALIGNMENT);
             actions.add(b);
@@ -29,8 +28,7 @@ public class AdminInterface {
         }
 
         // Wire buttons to existing UIs
-        listBtn.addActionListener(e -> SwingUtilities.invokeLater(AllList::List));
-        graphBtn.addActionListener(e -> SwingUtilities.invokeLater(Graph::chooseYear));
+        graphBtn.addActionListener(e -> SwingUtilities.invokeLater(NewUserGraph::chooseYear));
         groupManagerBtn.addActionListener(e -> SwingUtilities.invokeLater(GroupManager::showGroup));
         userManagerBtn.addActionListener(e -> SwingUtilities.invokeLater(UserManager::showUser));        
         loginLogBtn.addActionListener(e -> SwingUtilities.invokeLater(LogInLog::List));
