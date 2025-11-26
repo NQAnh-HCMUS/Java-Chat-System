@@ -57,13 +57,16 @@ public class FriendList {
             JPanel actions = new JPanel();
             actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
             JButton addBtn = new JButton("Add");
+            JButton filterBtn = new JButton("Filter Online/Offline");
             JButton removeBtn = new JButton("Remove");
             JButton detailsBtn = new JButton("Details");
             JButton messageBtn = new JButton("Message");
-            JButton reportBtn = new JButton("Report");
+            JButton groupBtn = new JButton("Create Group");
+            JButton reportBtn = new JButton("Report Spam");
+            JButton blockBtn = new JButton("Block");
             
-            Dimension buttonSize = new Dimension(120, 30);
-            for (JButton b : new JButton[]{addBtn, detailsBtn, messageBtn, removeBtn, reportBtn}) {
+            Dimension buttonSize = new Dimension(150, 30);
+            for (JButton b : new JButton[]{addBtn, filterBtn, removeBtn, detailsBtn, messageBtn, groupBtn, reportBtn, blockBtn}) {
                 b.setMaximumSize(buttonSize);
                 b.setAlignmentX(Component.CENTER_ALIGNMENT);
                 actions.add(b);
