@@ -129,7 +129,10 @@ public class AdminInterface {
             "Sign Up Log",
             "Login History",
             "Spam Reports",
-            "System Settings"
+            "Friend Network",
+            "User Activity List",
+            "System Settings",
+
         };
 
         Runnable[] buttonActions = {
@@ -140,6 +143,8 @@ public class AdminInterface {
             () -> SwingUtilities.invokeLater(SignUpLog::showList),
             () -> SwingUtilities.invokeLater(LogInLog::List),
             () -> SwingUtilities.invokeLater(SpamLog::List),
+            () -> SwingUtilities.invokeLater(FriendNetwork::showFriendNetwork),
+            () -> SwingUtilities.invokeLater(UserActivityList::showUserActivity), 
             () -> showSystemSettings()
         };
 
