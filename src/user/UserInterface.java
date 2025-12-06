@@ -36,7 +36,13 @@ public class UserInterface {
         friendListBtn.addActionListener(e -> SwingUtilities.invokeLater(FriendList::showFriendList));
         signUpBtn.addActionListener(e -> SwingUtilities.invokeLater(SignUp::getInfo));
         updateAccBtn.addActionListener(e -> SwingUtilities.invokeLater(UpdateAccount::getInfo));
-        singlechatBtn.addActionListener(e -> SwingUtilities.invokeLater(SingleChatUI::Chat));
+        singlechatBtn.addActionListener(e -> {
+            String friend = JOptionPane.showInputDialog(frame, "Enter username to chat with:", "Single Chat", JOptionPane.PLAIN_MESSAGE);
+            if (friend != null && !friend.trim().isEmpty()) {
+                String f = friend.trim();
+                SwingUtilities.invokeLater(() -> SingleChatUI.Chat(f));
+            }
+        });
         multichatBtn.addActionListener(e -> SwingUtilities.invokeLater(MultiChatUI::Chat));
         friendReqBtn.addActionListener(e -> SwingUtilities.invokeLater(FriendRequest::showRequest));
 

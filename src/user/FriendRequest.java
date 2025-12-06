@@ -77,7 +77,7 @@ public class FriendRequest {
     }
 
     private static List<String> loadFriends() throws IOException {
-        Path fList = Paths.get("script").resolve("friends.txt");
+        Path fList = Paths.get("script").resolve("friend_requests.txt");
         if (!Files.exists(fList)) { // if not, create parent dir & sample file
             if (fList.getParent() != null) Files.createDirectories(fList.getParent());
             List<String> sample = List.of("Friend A", "Friend B", "Friend C");
