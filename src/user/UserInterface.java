@@ -1,5 +1,14 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class UserInterface {
     public static void UserUI() {
@@ -15,7 +24,6 @@ public class UserInterface {
         actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
         JButton friendListBtn = new JButton("Friend List");
         JButton friendReqBtn = new JButton("Friend Requests");
-        JButton loginBtn = new JButton("Login");
         JButton multichatBtn = new JButton("Multi Chat");
         JButton singlechatBtn = new JButton("Single Chat");
         JButton signUpBtn = new JButton("Sign Up");
@@ -23,7 +31,7 @@ public class UserInterface {
         JButton regenpasswdButton = new JButton("Regenerate Password");
 
         Dimension buttonSize = new Dimension(160, 30);
-        for (JButton b : new JButton[]{loginBtn, regenpasswdButton, signUpBtn, updateAccBtn, friendReqBtn, friendListBtn, singlechatBtn, multichatBtn}) {
+        for (JButton b : new JButton[]{regenpasswdButton, signUpBtn, updateAccBtn, friendReqBtn, friendListBtn, singlechatBtn, multichatBtn}) {
             b.setMaximumSize(buttonSize);
             b.setAlignmentX(Component.CENTER_ALIGNMENT);
             actions.add(b);
@@ -31,7 +39,6 @@ public class UserInterface {
         }
 
         // Wire buttons to existing UIs
-        loginBtn.addActionListener(e -> SwingUtilities.invokeLater(LogIn::getInfo));
         regenpasswdButton.addActionListener(e -> SwingUtilities.invokeLater(RegenPass::getInfo));
         friendListBtn.addActionListener(e -> SwingUtilities.invokeLater(FriendList::showFriendList));
         signUpBtn.addActionListener(e -> SwingUtilities.invokeLater(SignUp::getInfo));
