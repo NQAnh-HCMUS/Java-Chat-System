@@ -34,6 +34,8 @@ public class App {
         frame.setSize(700, 700);
         frame.setLocationRelativeTo(null);
 
+        
+
         JPanel root = new JPanel(new BorderLayout(8, 8));
         root.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
 
@@ -70,6 +72,9 @@ public class App {
                 // Record login to log
                 recordLogin(username);
                 
+                // Close screen
+                frame.dispose();
+                
                 // Route to admin or user UI
                 if (username.equalsIgnoreCase("admin")) {
                     SwingUtilities.invokeLater(AdminInterface::AdminUI);
@@ -80,6 +85,11 @@ public class App {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
                 passField.setText("");
             }
+
+            // Record shutdown to log
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                recordShutdown(username);
+            }));
         });
         
         buttons.add(loginBtn);
@@ -92,7 +102,7 @@ public class App {
         passField.addActionListener(e -> loginBtn.doClick());
 
         frame.setContentPane(root);
-        frame.setVisible(true);
+        frame.setVisible(true);        
     }
 
     // Check username & password existence
@@ -137,17 +147,40 @@ public class App {
             }
             
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            String ipAddr = "IPADDRESS";
+            String ipAddress = "unknown";
             try {
-                ipAddr = InetAddress.getLocalHost().getHostAddress();
+                ipAddress = InetAddress.getLocalHost().getHostAddress();
             } catch (IOException ex) {
                 System.out.println("Could not retrieve IP address: " + ex.getMessage());
             }
             
-            String logEntry = System.lineSeparator() + timestamp + " " + username + " " + ipAddr;
+            String logEntry = System.lineSeparator() + timestamp + " LOGIN " + username + " " + ipAddress;
             Files.writeString(logFile, logEntry, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException ex) {
             System.out.println("Failed to record login: " + ex.getMessage());
+        }
+    }
+
+    // Record shutdown to log
+    private static void recordShutdown(String username) {
+        try {
+            Path logFile = Paths.get("script").resolve("login.log");
+            if (logFile.getParent() != null) {
+                Files.createDirectories(logFile.getParent());
+            }
+            
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String ipAddress = "unknown";
+            try {
+                ipAddress = InetAddress.getLocalHost().getHostAddress();
+            } catch (IOException ex) {
+                System.out.println("Could not retrieve IP address: " + ex.getMessage());
+            }
+            
+            String logEntry = System.lineSeparator() + timestamp + " LOGOUT " + username + " " + ipAddress;
+            Files.writeString(logFile, logEntry, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException ex) {
+            System.out.println("Failed to record shutdown: " + ex.getMessage());
         }
     }
 }
