@@ -58,7 +58,7 @@ public class LogIn {
             if (checkInfo(username, password)) {
                 JOptionPane.showMessageDialog(frame, "Welcome!" + username + ".", "Success", JOptionPane.INFORMATION_MESSAGE);
                 frame.dispose();
-                // TODO: Open main application UI (e.g., UserInterface.userUI())
+                UserInterface.UserUI();
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
                 passField.setText("");
