@@ -24,9 +24,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class App {
+    private static final Path DATABASE = Paths.get("script").resolve("data.sql");
+    private static final Path LOG = Paths.get("script").resolve("login.log");
+    private static final DateTimeFormatter TIMEFORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(App::createAndShowGui);
     }
+
 
     private static void createAndShowGui() {
         JFrame frame = new JFrame("Java Chat System");
@@ -56,9 +62,11 @@ public class App {
         // Buttons
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         JButton signupBtn = new JButton("Sign Up");
-        JButton loginBtn = new JButton("Log In");
+        signupBtn.addActionListener(e -> SwingUtilities.invokeLater(SignUp::getInfo));
+        
         
         // Get input & validate
+        JButton loginBtn = new JButton("Log In");
         loginBtn.addActionListener(e -> {
             String username = userField.getText().trim();
             String password = new String(passField.getPassword()).trim();
@@ -92,6 +100,8 @@ public class App {
             }));
         });
         
+
+
         buttons.add(loginBtn);
         buttons.add(signupBtn);
         root.add(buttons, BorderLayout.SOUTH);
@@ -107,14 +117,13 @@ public class App {
 
     // Check username & password existence
     private static boolean checkInfo(String username, String password) {
-        Path dataSQL = Paths.get("script").resolve("data.sql");
-        if (!Files.exists(dataSQL)) {
+        if (!Files.exists(DATABASE)) {
             System.out.println("Database not found.");
             return false;
         }
 
         try {
-            String data = Files.readString(dataSQL, StandardCharsets.UTF_8);
+            String data = Files.readString(DATABASE, StandardCharsets.UTF_8);
             String user = "'" + username.replace("'", "''") + "'";
             String passwd = "'" + password.replace("'", "''") + "'";
             String[] sections = data.split(";");
@@ -141,12 +150,11 @@ public class App {
     // Record login to log
     private static void recordLogin(String username) {
         try {
-            Path logFile = Paths.get("script").resolve("login.log");
-            if (logFile.getParent() != null) {
-                Files.createDirectories(logFile.getParent());
+            if (LOG.getParent() != null) {
+                Files.createDirectories(LOG.getParent());
             }
             
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String timestamp = LocalDateTime.now().format(TIMEFORMAT);
             String ipAddress = "unknown";
             try {
                 ipAddress = InetAddress.getLocalHost().getHostAddress();
@@ -155,7 +163,7 @@ public class App {
             }
             
             String logEntry = System.lineSeparator() + timestamp + " LOGIN " + username + " " + ipAddress;
-            Files.writeString(logFile, logEntry, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            Files.writeString(LOG, logEntry, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException ex) {
             System.out.println("Failed to record login: " + ex.getMessage());
         }
@@ -164,12 +172,11 @@ public class App {
     // Record shutdown to log
     private static void recordShutdown(String username) {
         try {
-            Path logFile = Paths.get("script").resolve("login.log");
-            if (logFile.getParent() != null) {
-                Files.createDirectories(logFile.getParent());
+            if (LOG.getParent() != null) {
+                Files.createDirectories(LOG.getParent());
             }
             
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String timestamp = LocalDateTime.now().format(TIMEFORMAT);
             String ipAddress = "unknown";
             try {
                 ipAddress = InetAddress.getLocalHost().getHostAddress();
@@ -178,7 +185,7 @@ public class App {
             }
             
             String logEntry = System.lineSeparator() + timestamp + " LOGOUT " + username + " " + ipAddress;
-            Files.writeString(logFile, logEntry, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            Files.writeString(LOG, logEntry, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException ex) {
             System.out.println("Failed to record shutdown: " + ex.getMessage());
         }
