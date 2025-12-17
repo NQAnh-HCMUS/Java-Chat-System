@@ -27,8 +27,13 @@ public class App {
     private static final Path DATABASE = Paths.get("script").resolve("data.sql");
     private static final Path LOG = Paths.get("script").resolve("login.log");
     private static final DateTimeFormatter TIMEFORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final String url = "jdbc:sqlserver://"+ "localhost:1433;"
+    + "databaseName=MSSQLSERVER;"
+    + "encrypt=false";
+    private static final String dbUser = "User";
+    private static final String dbPass = "123456";
 
-
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(App::createAndShowGui);
     }
@@ -117,6 +122,23 @@ public class App {
 
     // Check username & password existence
     private static boolean checkInfo(String username, String password) {
+        // try (Connection conn = DriverManager.getConnection(url, dbUser, dbPass);
+        //  PreparedStatement stmt = conn.prepareStatement(
+        //      "SELECT * FROM users WHERE (username = ? OR email = ?) AND password = ? AND is_active = 1")) {
+        
+        // stmt.setString(1, username);
+        // stmt.setString(2, username); // Check email too
+        // stmt.setString(3, password);
+        
+        // ResultSet rs = stmt.executeQuery();
+        // return rs.next(); // True if user found
+        
+        // } catch (SQLException ex) {
+        //     System.out.println("Database error: " + ex.getMessage());
+        //     return false;
+        // }
+
+        // Old file-based check w/o JDBC (deprecated)
         if (!Files.exists(DATABASE)) {
             System.out.println("Database not found.");
             return false;

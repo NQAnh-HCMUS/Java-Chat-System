@@ -1,6 +1,8 @@
 # Java-Chat-System
 
-Build and run (Windows cmd.exe):
+Build and run (Windows Terminal):
+<!-- javac -d ./dist/ -cp "./lib/*" out src\\*.java
+ -->
 
 ```
 cd /d [directory]
