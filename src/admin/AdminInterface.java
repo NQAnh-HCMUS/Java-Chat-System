@@ -1,4 +1,3 @@
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -6,7 +5,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -27,7 +25,6 @@ public class AdminInterface {
     private static final Color BLUE = new Color(0x0C5776);
     private static final Color TEAL = new Color(0x2D99AE);
     private static final Color LIGHT_TEAL = new Color(0xBCFEFE);
-    private static final Color PINK = new Color(0xF8DADA);
     private static final Color WHITE = Color.WHITE;
     private static final Color LIGHT_GRAY = new Color(0xF8F9FA);
 
@@ -35,7 +32,6 @@ public class AdminInterface {
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 26);
     private static final Font SUBTITLE_FONT = new Font("Segoe UI", Font.PLAIN, 14);
     private static final Font BUTTON_FONT = new Font("Segoe UI", Font.BOLD, 14);
-    private static final Font STAT_FONT = new Font("Segoe UI", Font.BOLD, 16);
 
     public static void AdminUI() {
         try {
@@ -120,7 +116,6 @@ public class AdminInterface {
         sidebar.setBorder(new EmptyBorder(25, 15, 25, 15));
         sidebar.setPreferredSize(new Dimension(220, 0));
 
-
         String[] buttonNames = {
             "User Management",
             "Group Management",
@@ -132,7 +127,6 @@ public class AdminInterface {
             "Friend Network",
             "User Activity List",
             "System Settings",
-
         };
 
         Runnable[] buttonActions = {
@@ -200,23 +194,15 @@ public class AdminInterface {
         contentPanel.setBackground(LIGHT_GRAY);
         contentPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
 
-        // Welcome section
+        // Welcome section (centered)
         JPanel welcomePanel = createWelcomePanel();
+        
+        // Center the welcome panel
+        JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        centerPanel.setBackground(LIGHT_GRAY);
+        centerPanel.add(welcomePanel);
 
-        // Stats section
-        JPanel statsPanel = createStatsPanel();
-
-        // Main content container
-        JPanel mainContent = new JPanel();
-        mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
-        mainContent.setBackground(LIGHT_GRAY);
-
-        mainContent.add(welcomePanel);
-        mainContent.add(Box.createRigidArea(new Dimension(0, 40)));
-        mainContent.add(statsPanel);
-        mainContent.add(Box.createVerticalGlue());
-
-        contentPanel.add(mainContent, BorderLayout.CENTER);
+        contentPanel.add(centerPanel, BorderLayout.CENTER);
 
         return contentPanel;
     }
@@ -225,80 +211,26 @@ public class AdminInterface {
         JPanel welcomePanel = new JPanel();
         welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.Y_AXIS));
         welcomePanel.setBackground(LIGHT_GRAY);
-        welcomePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        welcomePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        welcomePanel.setBorder(new EmptyBorder(100, 50, 100, 50));
 
         // Main welcome
-        JLabel welcomeLabel = new JLabel("Welcome to Admin Dashboard");
-        welcomeLabel.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        JLabel welcomeLabel = new JLabel("Welcome to the Admin Dashboard");
+        welcomeLabel.setFont(new Font("Segoe UI", Font.BOLD, 32));
         welcomeLabel.setForeground(DARK_BLUE);
-        welcomeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Subtitle
-        JLabel subtitleLabel = new JLabel("Manage your chat system efficiently with powerful tools");
-        subtitleLabel.setFont(SUBTITLE_FONT);
+        JLabel subtitleLabel = new JLabel("Manage your chat system effectively with powerful tools.");
+        subtitleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         subtitleLabel.setForeground(BLUE);
-        subtitleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         welcomePanel.add(welcomeLabel);
-        welcomePanel.add(Box.createRigidArea(new Dimension(0, 8)));
+        welcomePanel.add(Box.createRigidArea(new Dimension(0, 20)));
         welcomePanel.add(subtitleLabel);
 
         return welcomePanel;
-    }
-
-    private static JPanel createStatsPanel() {
-        // Use wrapper panel for proper centering and sizing
-        JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-        wrapperPanel.setBackground(LIGHT_GRAY);
-        wrapperPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JPanel statsPanel = new JPanel(new GridLayout(2, 3, 20, 20));
-        statsPanel.setBackground(LIGHT_GRAY);
-        statsPanel.setPreferredSize(new Dimension(700, 220));
-
-        // Sample stats
-        String[] stats = {"1,234", "567", "89", "12,345", "23", "456"};
-        String[] titles = {"Total Users", "Active Today", "Groups", "Messages", "Reports", "Online"};
-        Color[] colors = {TEAL, BLUE, DARK_BLUE, TEAL, BLUE, DARK_BLUE};
-
-        for (int i = 0; i < stats.length; i++) {
-            JPanel statCard = createModernStatCard(titles[i], stats[i], colors[i]);
-            statsPanel.add(statCard);
-        }
-
-        wrapperPanel.add(statsPanel);
-        return wrapperPanel;
-    }
-
-    private static JPanel createModernStatCard(String title, String value, Color color) {
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(WHITE);
-        card.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(0xE1E8ED), 1),
-                new EmptyBorder(20, 15, 20, 15)
-        ));
-        card.setPreferredSize(new Dimension(180, 90));
-
-        // Title
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        titleLabel.setForeground(BLUE);
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Value
-        JLabel valueLabel = new JLabel(value);
-        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        valueLabel.setForeground(color);
-        valueLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        card.add(Box.createVerticalGlue());
-        card.add(titleLabel);
-        card.add(Box.createRigidArea(new Dimension(0, 8)));
-        card.add(valueLabel);
-        card.add(Box.createVerticalGlue());
-
-        return card;
     }
 
     private static JPanel createFooterPanel() {
