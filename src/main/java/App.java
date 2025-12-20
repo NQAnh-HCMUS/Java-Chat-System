@@ -23,24 +23,20 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+
 public class App {
     private static final Path DATABASE = Paths.get("script").resolve("data.sql");
     private static final Path LOG = Paths.get("script").resolve("login.log");
     private static final DateTimeFormatter TIMEFORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static final String url = "jdbc:sqlserver://"+ "localhost:1433;"
-    + "databaseName=MSSQLSERVER;"
-    + "encrypt=false";
-    private static final String dbUser = "User";
-    private static final String dbPass = "123456";
 
-    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(App::createAndShowGui);
     }
 
 
     private static void createAndShowGui() {
-        JFrame frame = new JFrame("Java Chat System");
+        JFrame frame = new JFrame("egwrifuyasbfhkjhasdbfasdkhfjbgsahjfbd");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 700);
         frame.setLocationRelativeTo(null);
@@ -64,8 +60,13 @@ public class App {
 
         root.add(form, BorderLayout.CENTER);
 
-        // Buttons
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        // Bottom area: left (Regen Pass), right (Login & Sign Up)
+        JPanel bottom = new JPanel(new BorderLayout());
+        JPanel leftButtons = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        JButton regenBtn = new JButton("Regen Pass");
+        regenBtn.addActionListener(e -> SwingUtilities.invokeLater(RegenPass::getInfo));
+        leftButtons.add(regenBtn);
+        JPanel rightButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         JButton signupBtn = new JButton("Sign Up");
         signupBtn.addActionListener(e -> SwingUtilities.invokeLater(SignUp::getInfo));
         
@@ -107,9 +108,11 @@ public class App {
         
 
 
-        buttons.add(loginBtn);
-        buttons.add(signupBtn);
-        root.add(buttons, BorderLayout.SOUTH);
+        rightButtons.add(loginBtn);
+        rightButtons.add(signupBtn);
+        bottom.add(leftButtons, BorderLayout.WEST);
+        bottom.add(rightButtons, BorderLayout.EAST);
+        root.add(bottom, BorderLayout.SOUTH);
 
         // Press Enter in userField -> moves to passField
         userField.addActionListener(e -> passField.requestFocus());
@@ -122,23 +125,6 @@ public class App {
 
     // Check username & password existence
     private static boolean checkInfo(String username, String password) {
-        // try (Connection conn = DriverManager.getConnection(url, dbUser, dbPass);
-        //  PreparedStatement stmt = conn.prepareStatement(
-        //      "SELECT * FROM users WHERE (username = ? OR email = ?) AND password = ? AND is_active = 1")) {
-        
-        // stmt.setString(1, username);
-        // stmt.setString(2, username); // Check email too
-        // stmt.setString(3, password);
-        
-        // ResultSet rs = stmt.executeQuery();
-        // return rs.next(); // True if user found
-        
-        // } catch (SQLException ex) {
-        //     System.out.println("Database error: " + ex.getMessage());
-        //     return false;
-        // }
-
-        // Old file-based check w/o JDBC (deprecated)
         if (!Files.exists(DATABASE)) {
             System.out.println("Database not found.");
             return false;

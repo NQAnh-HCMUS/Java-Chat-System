@@ -55,8 +55,6 @@ public class SignUp {
         // Buttons
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         JButton signupBtn = new JButton("Sign Up");
-        JButton loginBtn = new JButton("Log In");
-        buttons.add(loginBtn);
         buttons.add(signupBtn);
         root.add(buttons, BorderLayout.SOUTH);
 
@@ -99,9 +97,6 @@ public class SignUp {
                 }
             }
         });
-
-        // Navigate back to Log In screen
-        loginBtn.addActionListener(e -> frame.dispose());
 
         frame.setContentPane(root);
         frame.setVisible(true);

@@ -2,8 +2,8 @@ USE ChatSystem;
 GO
 -- 1. Chèn dữ liệu người dùng TRƯỚC
 INSERT INTO users (username, password, full_name, address, date_of_birth, gender, email, is_active, is_locked) VALUES
+('john_doe', 'password123', N'1G$CL474GPEg', N'TP Ho Chi Minh', '1995-05-15', 'Male', 'john.doe@email.com', 1, 0),
 ('admin', 'admin123', N'Quan Tri Vien', N'Ha Noi', '1990-01-01', 'Male', 'admin@chatsystem.com', 1, 0),
-('john_doe', 'password123', N'John Doe', N'TP Ho Chi Minh', '1995-05-15', 'Male', 'john.doe@email.com', 1, 0),
 ('jane_smith', 'password123', N'Jane Smith', N'Da Nang', '1998-08-20', 'Female', 'jane.smith@email.com', 1, 0),
 ('mike_wilson', 'password123', N'Mike Wilson', N'Hai Phong', '1993-03-10', 'Male', 'mike.wilson@email.com', 1, 0),
 ('sarah_johnson', 'password123', N'Sarah Johnson', N'Can Tho', '1996-07-25', 'Female', 'sarah.johnson@email.com', 1, 0),

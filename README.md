@@ -1,12 +1,9 @@
 # Java-Chat-System
 
-Build and run (Windows Terminal):
-<!-- javac -d ./dist/ -cp "./lib/*" out src\\*.java
- -->
+Build and run (Windows cmd.exe):
 
 ```
 cd /d [directory]
-javac -d out src\\*.java
 mvn -B package
 java -cp target\classes App
 ```

@@ -1,5 +1,13 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class RegenPass {
     public static void getInfo() {
@@ -21,11 +29,26 @@ public class RegenPass {
 
         root.add(form, BorderLayout.CENTER);
 
-        // Buttons
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        // Bottom area: status on the left, button on the right
+        JLabel statusLabel = new JLabel(" ");
+        JPanel bottom = new JPanel(new BorderLayout());
+
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         JButton sendBtn = new JButton("Randomize");
+        sendBtn.addActionListener(e -> {
+            String email = emailField.getText().trim();
+            if (email.isEmpty()) {
+                statusLabel.setText("Enter your email");
+                return;
+            }
+            // Optional: show generic success text when not empty
+            statusLabel.setText("Password sent");
+        });
         buttons.add(sendBtn);
-        root.add(buttons, BorderLayout.SOUTH);
+
+        bottom.add(statusLabel, BorderLayout.WEST);
+        bottom.add(buttons, BorderLayout.EAST);
+        root.add(bottom, BorderLayout.SOUTH);
 
         frame.setContentPane(root);
         frame.setVisible(true);
