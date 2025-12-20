@@ -1,8 +1,11 @@
-// This is main.
-
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
@@ -23,110 +26,150 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-
 public class App {
     private static final Path DATABASE = Paths.get("script").resolve("data.sql");
     private static final Path LOG = Paths.get("script").resolve("login.log");
     private static final DateTimeFormatter TIMEFORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(App::createAndShowGui);
     }
 
-
     private static void createAndShowGui() {
-        JFrame frame = new JFrame("egwrifuyasbfhkjhasdbfasdkhfjbgsahjfbd");
+        JFrame frame = new JFrame("Đăng nhập hệ thống");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 700);
+        frame.setSize(450, 350);
         frame.setLocationRelativeTo(null);
 
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(Color.WHITE);
+
+        // Header
+        JLabel titleLabel = new JLabel("ĐĂNG NHẬP", JLabel.CENTER);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        titleLabel.setForeground(new Color(0, 102, 204));
+        mainPanel.add(titleLabel, BorderLayout.NORTH);
+
+        // Form panel
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(Color.WHITE);
+        formPanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
         
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JPanel root = new JPanel(new BorderLayout(8, 8));
-        root.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+        // Username field
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        JLabel userLabel = new JLabel("Tên đăng nhập:");
+        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        formPanel.add(userLabel, gbc);
 
-        // Form fields
-        JPanel form = new JPanel(new GridLayout(0, 2, 8, 8));
-        JLabel userLabel = new JLabel("Username/Email:");
+        gbc.gridx = 1;
+        gbc.gridwidth = 2;
+        gbc.weightx = 1.0;
         JTextField userField = new JTextField();
-        JLabel passLabel = new JLabel("Password:");
+        userField.setPreferredSize(new Dimension(200, 30));
+        userField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        formPanel.add(userField, gbc);
+
+        // Password field
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        JLabel passLabel = new JLabel("Mật khẩu:");
+        passLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        formPanel.add(passLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridwidth = 2;
         JPasswordField passField = new JPasswordField();
+        passField.setPreferredSize(new Dimension(200, 30));
+        passField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        formPanel.add(passField, gbc);
 
-        form.add(userLabel);
-        form.add(userField);
-        form.add(passLabel);
-        form.add(passField);
+        mainPanel.add(formPanel, BorderLayout.CENTER);
 
-        root.add(form, BorderLayout.CENTER);
+        // Button panel
+        JPanel buttonPanel = new JPanel(new BorderLayout(10, 0));
+        buttonPanel.setBackground(Color.WHITE);
 
-        // Bottom area: left (Regen Pass), right (Login & Sign Up)
-        JPanel bottom = new JPanel(new BorderLayout());
-        JPanel leftButtons = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        JButton regenBtn = new JButton("Regen Pass");
+        // Left buttons
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        leftPanel.setBackground(Color.WHITE);
+        JButton regenBtn = new JButton("Quên mật khẩu");
+        regenBtn.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        regenBtn.setForeground(new Color(0, 102, 204));
+        regenBtn.setContentAreaFilled(false);
+        regenBtn.setBorderPainted(false);
+        regenBtn.setFocusPainted(false);
         regenBtn.addActionListener(e -> SwingUtilities.invokeLater(RegenPass::getInfo));
-        leftButtons.add(regenBtn);
-        JPanel rightButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        JButton signupBtn = new JButton("Sign Up");
+        leftPanel.add(regenBtn);
+
+        // Right buttons
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        rightPanel.setBackground(Color.WHITE);
+        
+        JButton signupBtn = new JButton("Đăng ký");
+        signupBtn.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        signupBtn.setBackground(new Color(240, 240, 240));
+        signupBtn.setFocusPainted(false);
         signupBtn.addActionListener(e -> SwingUtilities.invokeLater(SignUp::getInfo));
-        
-        
-        // Get input & validate
-        JButton loginBtn = new JButton("Log In");
+
+        JButton loginBtn = new JButton("Đăng nhập");
+        loginBtn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        loginBtn.setBackground(new Color(0, 102, 204));
+        loginBtn.setForeground(Color.WHITE);
+        loginBtn.setFocusPainted(false);
+
         loginBtn.addActionListener(e -> {
             String username = userField.getText().trim();
             String password = new String(passField.getPassword()).trim();
-            
+
             if (username.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "Please enter username and password.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Vui lòng nhập tên đăng nhập và mật khẩu.", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             if (checkInfo(username, password)) {
-                // Record login to log
                 recordLogin(username);
-                
-                // Close screen
                 frame.dispose();
-                
-                // Route to admin or user UI
+
                 if (username.equalsIgnoreCase("admin")) {
                     SwingUtilities.invokeLater(AdminInterface::AdminUI);
                 } else {
                     SwingUtilities.invokeLater(UserInterface::UserUI);
                 }
             } else {
-                JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Tên đăng nhập hoặc mật khẩu không đúng.", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 passField.setText("");
             }
 
-            // Record shutdown to log
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 recordShutdown(username);
             }));
         });
-        
 
+        rightPanel.add(signupBtn);
+        rightPanel.add(loginBtn);
 
-        rightButtons.add(loginBtn);
-        rightButtons.add(signupBtn);
-        bottom.add(leftButtons, BorderLayout.WEST);
-        bottom.add(rightButtons, BorderLayout.EAST);
-        root.add(bottom, BorderLayout.SOUTH);
+        buttonPanel.add(leftPanel, BorderLayout.WEST);
+        buttonPanel.add(rightPanel, BorderLayout.EAST);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Press Enter in userField -> moves to passField
+        // Keyboard shortcuts
         userField.addActionListener(e -> passField.requestFocus());
-        // Press Enter in passField == Login button
         passField.addActionListener(e -> loginBtn.doClick());
 
-        frame.setContentPane(root);
-        frame.setVisible(true);        
+        frame.setContentPane(mainPanel);
+        frame.setVisible(true);
     }
 
-    // Check username & password existence
     private static boolean checkInfo(String username, String password) {
         if (!Files.exists(DATABASE)) {
-            System.out.println("Database not found.");
+            System.out.println("Không tìm thấy cơ sở dữ liệu.");
             return false;
         }
 
@@ -138,8 +181,7 @@ public class App {
 
             for (String section : sections) {
                 if (section.trim().isEmpty()) continue;
-                
-                // If first line has username & password
+
                 String firstLine = section.toLowerCase();
                 if (firstLine.contains("insert into users")) {
                     if (section.toLowerCase().contains(user.toLowerCase()) &&
@@ -149,53 +191,51 @@ public class App {
                 }
             }
         } catch (IOException ex) {
-            System.out.println("Failed to read database: " + ex.getMessage());
+            System.out.println("Lỗi đọc cơ sở dữ liệu: " + ex.getMessage());
         }
-        
+
         return false;
     }
 
-    // Record login to log
     private static void recordLogin(String username) {
         try {
             if (LOG.getParent() != null) {
                 Files.createDirectories(LOG.getParent());
             }
-            
+
             String timestamp = LocalDateTime.now().format(TIMEFORMAT);
             String ipAddress = "unknown";
             try {
                 ipAddress = InetAddress.getLocalHost().getHostAddress();
             } catch (IOException ex) {
-                System.out.println("Could not retrieve IP address: " + ex.getMessage());
+                System.out.println("Không thể lấy địa chỉ IP: " + ex.getMessage());
             }
-            
+
             String logEntry = System.lineSeparator() + timestamp + " LOGIN " + username + " " + ipAddress;
             Files.writeString(LOG, logEntry, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException ex) {
-            System.out.println("Failed to record login: " + ex.getMessage());
+            System.out.println("Lỗi ghi log đăng nhập: " + ex.getMessage());
         }
     }
 
-    // Record shutdown to log
     private static void recordShutdown(String username) {
         try {
             if (LOG.getParent() != null) {
                 Files.createDirectories(LOG.getParent());
             }
-            
+
             String timestamp = LocalDateTime.now().format(TIMEFORMAT);
             String ipAddress = "unknown";
             try {
                 ipAddress = InetAddress.getLocalHost().getHostAddress();
             } catch (IOException ex) {
-                System.out.println("Could not retrieve IP address: " + ex.getMessage());
+                System.out.println("Không thể lấy địa chỉ IP: " + ex.getMessage());
             }
-            
+
             String logEntry = System.lineSeparator() + timestamp + " LOGOUT " + username + " " + ipAddress;
             Files.writeString(LOG, logEntry, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException ex) {
-            System.out.println("Failed to record shutdown: " + ex.getMessage());
+            System.out.println("Lỗi ghi log đăng xuất: " + ex.getMessage());
         }
     }
 }
