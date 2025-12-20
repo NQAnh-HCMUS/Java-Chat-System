@@ -36,7 +36,7 @@ public class App {
     }
 
     private static void createAndShowGui() {
-        JFrame frame = new JFrame("Đăng nhập hệ thống");
+        JFrame frame = new JFrame("Login System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(450, 350);
         frame.setLocationRelativeTo(null);
@@ -46,7 +46,7 @@ public class App {
         mainPanel.setBackground(Color.WHITE);
 
         // Header
-        JLabel titleLabel = new JLabel("ĐĂNG NHẬP", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("LOGIN", JLabel.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
         titleLabel.setForeground(new Color(0, 102, 204));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
@@ -63,7 +63,7 @@ public class App {
         // Username field
         gbc.gridx = 0;
         gbc.gridy = 0;
-        JLabel userLabel = new JLabel("Tên đăng nhập:");
+        JLabel userLabel = new JLabel("Username:");
         userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         formPanel.add(userLabel, gbc);
 
@@ -79,7 +79,7 @@ public class App {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        JLabel passLabel = new JLabel("Mật khẩu:");
+        JLabel passLabel = new JLabel("Password:");
         passLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         formPanel.add(passLabel, gbc);
 
@@ -99,7 +99,7 @@ public class App {
         // Left buttons
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         leftPanel.setBackground(Color.WHITE);
-        JButton regenBtn = new JButton("Quên mật khẩu");
+        JButton regenBtn = new JButton("Forgot Password");
         regenBtn.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         regenBtn.setForeground(new Color(0, 102, 204));
         regenBtn.setContentAreaFilled(false);
@@ -112,13 +112,13 @@ public class App {
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         rightPanel.setBackground(Color.WHITE);
         
-        JButton signupBtn = new JButton("Đăng ký");
+        JButton signupBtn = new JButton("Sign Up");
         signupBtn.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         signupBtn.setBackground(new Color(240, 240, 240));
         signupBtn.setFocusPainted(false);
         signupBtn.addActionListener(e -> SwingUtilities.invokeLater(SignUp::getInfo));
 
-        JButton loginBtn = new JButton("Đăng nhập");
+        JButton loginBtn = new JButton("Login");
         loginBtn.setFont(new Font("Segoe UI", Font.BOLD, 13));
         loginBtn.setBackground(new Color(0, 102, 204));
         loginBtn.setForeground(Color.WHITE);
@@ -129,7 +129,7 @@ public class App {
             String password = new String(passField.getPassword()).trim();
 
             if (username.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "Vui lòng nhập tên đăng nhập và mật khẩu.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Please enter username and password.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -143,7 +143,7 @@ public class App {
                     SwingUtilities.invokeLater(UserInterface::UserUI);
                 }
             } else {
-                JOptionPane.showMessageDialog(frame, "Tên đăng nhập hoặc mật khẩu không đúng.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
                 passField.setText("");
             }
 
@@ -169,7 +169,7 @@ public class App {
 
     private static boolean checkInfo(String username, String password) {
         if (!Files.exists(DATABASE)) {
-            System.out.println("Không tìm thấy cơ sở dữ liệu.");
+            System.out.println("Database not found.");
             return false;
         }
 
@@ -191,7 +191,7 @@ public class App {
                 }
             }
         } catch (IOException ex) {
-            System.out.println("Lỗi đọc cơ sở dữ liệu: " + ex.getMessage());
+            System.out.println("Database read error: " + ex.getMessage());
         }
 
         return false;
@@ -208,13 +208,13 @@ public class App {
             try {
                 ipAddress = InetAddress.getLocalHost().getHostAddress();
             } catch (IOException ex) {
-                System.out.println("Không thể lấy địa chỉ IP: " + ex.getMessage());
+                System.out.println("Cannot get IP address: " + ex.getMessage());
             }
 
             String logEntry = System.lineSeparator() + timestamp + " LOGIN " + username + " " + ipAddress;
             Files.writeString(LOG, logEntry, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException ex) {
-            System.out.println("Lỗi ghi log đăng nhập: " + ex.getMessage());
+            System.out.println("Login log write error: " + ex.getMessage());
         }
     }
 
@@ -229,13 +229,13 @@ public class App {
             try {
                 ipAddress = InetAddress.getLocalHost().getHostAddress();
             } catch (IOException ex) {
-                System.out.println("Không thể lấy địa chỉ IP: " + ex.getMessage());
+                System.out.println("Cannot get IP address: " + ex.getMessage());
             }
 
             String logEntry = System.lineSeparator() + timestamp + " LOGOUT " + username + " " + ipAddress;
             Files.writeString(LOG, logEntry, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException ex) {
-            System.out.println("Lỗi ghi log đăng xuất: " + ex.getMessage());
+            System.out.println("Logout log write error: " + ex.getMessage());
         }
     }
 }
